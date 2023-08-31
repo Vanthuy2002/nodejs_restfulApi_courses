@@ -8,11 +8,14 @@ const {
   handleUpdate,
   getDetailStudent,
   generateData,
+  deleteStudent,
 } = studentController;
 
 routerStudents.get('/', getAllStudents);
 
 routerStudents.get('/:id', getDetailStudent);
+
+routerStudents.delete('/:id', deleteStudent);
 
 routerStudents.post('/insert', handleCreateStudent);
 

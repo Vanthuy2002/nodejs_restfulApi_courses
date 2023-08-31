@@ -5,6 +5,7 @@ import {
   handleStudents,
   handleDetails,
   handleUpdateStudents,
+  handleDeleteStudent,
 } from '../repogistory/studentRepo.js';
 import { CURRENT_PAGE, LIMIT } from '../utils/contanst.js';
 
@@ -84,12 +85,24 @@ const handleUpdate = async (req, res) => {
   }
 };
 
+// api delete student;
+const deleteStudent = async (req, res) => {
+  const { id } = req.params;
+  await handleDeleteStudent({ id });
+  res.status(OK).json({ message: 'Delete students sucessfully' });
+  try {
+  } catch (error) {
+    res.status(BAD_REQUEST).json({ message: error });
+  }
+};
+
 const studentController = {
   getAllStudents,
   handleCreateStudent,
   handleUpdate,
   getDetailStudent,
   generateData,
+  deleteStudent,
 };
 
 export default studentController;

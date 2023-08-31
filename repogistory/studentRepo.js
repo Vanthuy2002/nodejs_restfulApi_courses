@@ -66,7 +66,6 @@ const handleUpdateStudents = async ({
     currentStudent.gender = gender ?? currentStudent.gender;
     currentStudent.languages = languages ?? currentStudent.languages;
     await currentStudent.save();
-    debugger;
     return currentStudent;
   } catch (e) {
     if (e.errors) {
@@ -80,10 +79,16 @@ const handleDetails = async ({ id }) => {
   return student || [];
 };
 
+const handleDeleteStudent = async ({ id }) => {
+  await MyStudents.findByIdAndDelete(id).exec();
+  debugger;
+};
+
 export {
   handleStudents,
   insertStudent,
   generateStudents,
   handleDetails,
   handleUpdateStudents,
+  handleDeleteStudent,
 };
