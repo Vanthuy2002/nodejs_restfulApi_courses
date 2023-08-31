@@ -1,4 +1,3 @@
-import { logger, OutputTypes } from '../helper/logger.js';
 import { MyStudents } from '../Model/index.js';
 import { Exections } from '../errors/Exection.js';
 import { faker } from '@faker-js/faker';
@@ -17,11 +16,21 @@ const generateStudents = async () => {
   });
 };
 
-const getAllStudents = async ({ page, size, searchString }) => {
-  logger(
-    `get all students ${page} ${size} ${searchString}`,
-    OutputTypes.INFOMATION
-  );
+const handleStudents = async ({ page, limit, search }) => {
+  try {
+    const studentInDb = await MyStudents.aggregate([
+      {
+        $match: {
+          $or: [{ name: { $regex: `.*${search}.*`, $options: 'i' } }],
+        },
+      },
+      { $skip: (page - 1) * limit },
+      { $limit: limit },
+    ]);
+    return studentInDb;
+  } catch (error) {
+    throw new Exections('Can not get api', error.message);
+  }
 };
 
 const insertStudent = async ({ name, age, phone, gender, languages }) => {
@@ -41,4 +50,9 @@ const insertStudent = async ({ name, age, phone, gender, languages }) => {
   }
 };
 
-export { getAllStudents, insertStudent, generateStudents };
+const handleDetails = async ({ id }) => {
+  const student = MyStudents.findById({ _id: id }).exec();
+  return student;
+};
+
+export { handleStudents, insertStudent, generateStudents, handleDetails };

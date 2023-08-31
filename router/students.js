@@ -3,14 +3,14 @@ import { studentController } from '../controllers/index.js';
 const routerStudents = express.Router();
 
 const {
-  renderPage,
+  getAllStudents,
   handleCreateStudent,
   handleUpdate,
   getDetailStudent,
   generateData,
 } = studentController;
 
-routerStudents.get('/', renderPage);
+routerStudents.get('/', getAllStudents);
 
 routerStudents.get('/:id', getDetailStudent);
 

@@ -1,30 +1,38 @@
 import { statusCodes } from '../errors/StatusCode.js';
-import { generateStudents, insertStudent } from '../repogistory/studentRepo.js';
+import {
+  generateStudents,
+  insertStudent,
+  handleStudents,
+  handleDetails,
+} from '../repogistory/studentRepo.js';
+import { CURRENT_PAGE, LIMIT } from '../utils/contanst.js';
 
-const { OK, BAD_REQUEST } = statusCodes;
+const { OK, BAD_REQUEST, INTERNAL_SERVER, NOT_FOUND } = statusCodes;
 
-const renderPage = (req, res) => {
-  res.status(OK).json({
-    message: 'Get all students',
-    data: [
-      {
-        name: 'Thuy nguyen',
-        age: 21,
-        gender: 'male',
-      },
-      {
-        name: 'Unknow People',
-        age: 21,
-        gender: 'female',
-      },
-    ],
-  });
+const getAllStudents = async (req, res) => {
+  try {
+    let { page = CURRENT_PAGE, limit = LIMIT, search = '' } = req.query;
+    limit = limit >= LIMIT ? LIMIT : limit;
+    page = parseInt(page);
+
+    const students = await handleStudents({ page, limit, search });
+    res
+      .status(OK)
+      .json({ page, limit, search, size: students.length, students });
+  } catch (excetion) {
+    res
+      .status(INTERNAL_SERVER)
+      .json({ message: 'Can not get students', errors: excetion.validate });
+  }
 };
 
 const generateData = async (req, res) => {
   try {
-    await generateStudents();
-    res.json({ message: 'Create student successfully!!' });
+    const data = await generateStudents();
+    res.json({
+      message: 'Create student successfully!!',
+      student: data.length,
+    });
   } catch (excetion) {
     res
       .status(BAD_REQUEST)
@@ -32,8 +40,16 @@ const generateData = async (req, res) => {
   }
 };
 
-const getDetailStudent = (req, res) => {
-  res.status(OK).json({ message: 'This is details page of students' });
+const getDetailStudent = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const studentDetails = await handleDetails({ id });
+    res.status(OK).json({ student: studentDetails });
+  } catch (exection) {
+    res
+      .status(NOT_FOUND)
+      .json({ message: 'Can not find student', error: exection.validate });
+  }
 };
 
 // handle post students
@@ -56,7 +72,7 @@ const handleUpdate = (req, res) => {
 };
 
 const studentController = {
-  renderPage,
+  getAllStudents,
   handleCreateStudent,
   handleUpdate,
   getDetailStudent,
