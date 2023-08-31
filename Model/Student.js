@@ -13,7 +13,7 @@ const Student = new Schema(
       },
     },
     phone: {
-      type: Number,
+      type: String,
       required: true,
     },
     age: {

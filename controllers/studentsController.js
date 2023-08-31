@@ -1,5 +1,5 @@
 import { statusCodes } from '../errors/StatusCode.js';
-import { insertStudent } from '../repogistory/studentRepo.js';
+import { generateStudents, insertStudent } from '../repogistory/studentRepo.js';
 
 const { OK, BAD_REQUEST } = statusCodes;
 
@@ -19,6 +19,17 @@ const renderPage = (req, res) => {
       },
     ],
   });
+};
+
+const generateData = async (req, res) => {
+  try {
+    await generateStudents();
+    res.json({ message: 'Create student successfully!!' });
+  } catch (excetion) {
+    res
+      .status(BAD_REQUEST)
+      .json({ message: 'Can not create students', errors: excetion.validate });
+  }
 };
 
 const getDetailStudent = (req, res) => {
@@ -49,6 +60,7 @@ const studentController = {
   handleCreateStudent,
   handleUpdate,
   getDetailStudent,
+  generateData,
 };
 
 export default studentController;
