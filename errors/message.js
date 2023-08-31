@@ -9,4 +9,8 @@ export const message = {
     NOT_COMPARE: 'Wrong email or password',
     SUCCESS: 'Login successfully, check to console!!',
   },
+
+  student: {
+    CREATED: 'Create a students successfully!!',
+  },
 };

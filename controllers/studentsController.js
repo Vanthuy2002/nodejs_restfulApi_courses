@@ -28,10 +28,14 @@ const getDetailStudent = (req, res) => {
 // handle post students
 const handleCreateStudent = async (req, res) => {
   try {
-    await insertStudent({ ...req.body });
-    res.status(OK).json({ message: 'Add student successfully!!!' });
-  } catch (error) {
-    res.status(BAD_REQUEST).json({ mess: error.toString() });
+    const student = await insertStudent({ ...req.body });
+    res
+      .status(OK)
+      .json({ message: 'Add student successfully!!!', data: student });
+  } catch (excetion) {
+    res
+      .status(BAD_REQUEST)
+      .json({ message: 'Can not create students', errors: excetion.validate });
   }
 };
 

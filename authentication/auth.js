@@ -15,11 +15,12 @@ export default function checkTokens(req, res, next) {
     const jwtObject = jwt.verify(token, process.env.JWT_KEY);
     const isExpired = Date.now() > jwtObject.exp * 1000;
     if (isExpired) {
+      debugger;
       res.status(statusCodes.BAD_REQUEST).json({ message: error.toString() });
     } else {
       next();
     }
   } catch (error) {
-    res.status(statusCodes.BAD_REQUEST).json({ message: error.toString() });
+    res.status(statusCodes.BAD_REQUEST).json({ message: error.message });
   }
 }

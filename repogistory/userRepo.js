@@ -11,7 +11,7 @@ const login = async ({ email, password }) => {
     const isMatched = await bcrypt.compare(password, exitingUser.password);
     if (isMatched) {
       const token = jwt.sign({ data: exitingUser }, process.env.JWT_KEY, {
-        expiresIn: '1h',
+        expiresIn: '2h',
       });
 
       const userLogin = { ...exitingUser.toObject(), token };

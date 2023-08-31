@@ -1,4 +1,6 @@
 import { logger, OutputTypes } from '../helper/logger.js';
+import { MyStudents } from '../Model/index.js';
+import { Exections } from '../errors/Exection.js';
 
 const getAllStudents = async ({ page, size, searchString }) => {
   logger(
@@ -7,11 +9,21 @@ const getAllStudents = async ({ page, size, searchString }) => {
   );
 };
 
-const insertStudent = async ({ name, email, language, gender, age }) => {
-  logger(
-    `Insert students ${name} ${email} ${language} ${gender} ${age}`,
-    OutputTypes.INFOMATION
-  );
+const insertStudent = async ({ name, age, phone, gender, languages }) => {
+  try {
+    const newStudent = await MyStudents.create({
+      name,
+      age,
+      phone,
+      gender,
+      languages,
+    });
+    return newStudent;
+  } catch (e) {
+    if (e.errors) {
+      throw new Exections('Input erorrs', e.errors);
+    }
+  }
 };
 
 export { getAllStudents, insertStudent };

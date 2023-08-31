@@ -12,29 +12,13 @@ const Student = new Schema(
         message: 'Name must be at least 3 characters',
       },
     },
-    email: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (value) => regexEmail.test(value),
-        message: 'Must be an email',
-      },
-    },
-
-    password: {
-      type: String,
-      required: true,
-    },
     phone: {
       type: Number,
       required: true,
-      validate: {
-        validator: (num) => num.length > 5,
-        message: 'Phone must be at least 5 characters',
-      },
     },
     age: {
       type: Number,
+      required: true,
     },
     languages: {
       type: [String],
