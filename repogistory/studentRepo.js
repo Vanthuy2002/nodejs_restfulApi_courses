@@ -50,9 +50,40 @@ const insertStudent = async ({ name, age, phone, gender, languages }) => {
   }
 };
 
-const handleDetails = async ({ id }) => {
-  const student = MyStudents.findById({ _id: id }).exec();
-  return student;
+const handleUpdateStudents = async ({
+  id,
+  name,
+  age,
+  phone,
+  gender,
+  languages,
+}) => {
+  try {
+    const currentStudent = await MyStudents.findById(id).exec();
+    currentStudent.name = name ?? currentStudent.name;
+    currentStudent.age = age ?? currentStudent.age;
+    currentStudent.phone = phone ?? currentStudent.phone;
+    currentStudent.gender = gender ?? currentStudent.gender;
+    currentStudent.languages = languages ?? currentStudent.languages;
+    await currentStudent.save();
+    debugger;
+    return currentStudent;
+  } catch (e) {
+    if (e.errors) {
+      throw new Exections('Input erorrs', e.errors);
+    }
+  }
 };
 
-export { handleStudents, insertStudent, generateStudents, handleDetails };
+const handleDetails = async ({ id }) => {
+  const student = await MyStudents.findById(id).exec();
+  return student || [];
+};
+
+export {
+  handleStudents,
+  insertStudent,
+  generateStudents,
+  handleDetails,
+  handleUpdateStudents,
+};

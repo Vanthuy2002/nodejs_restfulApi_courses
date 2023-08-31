@@ -18,6 +18,6 @@ routerStudents.post('/insert', handleCreateStudent);
 
 routerStudents.post('/create', generateData);
 
-routerStudents.patch('/insert', handleUpdate);
+routerStudents.patch('/update/:id', handleUpdate);
 
 export { routerStudents };

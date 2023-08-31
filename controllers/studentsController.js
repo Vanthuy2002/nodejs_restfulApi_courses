@@ -4,6 +4,7 @@ import {
   insertStudent,
   handleStudents,
   handleDetails,
+  handleUpdateStudents,
 } from '../repogistory/studentRepo.js';
 import { CURRENT_PAGE, LIMIT } from '../utils/contanst.js';
 
@@ -67,8 +68,20 @@ const handleCreateStudent = async (req, res) => {
 };
 
 // handle Update or create new
-const handleUpdate = (req, res) => {
-  res.send('Patch will create new object if it not exist');
+const handleUpdate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedStudent = await handleUpdateStudents({ id, ...req.body });
+    res.status(OK).json({
+      message: 'Update student successfully!',
+      student: updatedStudent,
+    });
+  } catch (excection) {
+    res.status(BAD_REQUEST).json({
+      message: 'Can not updated student!!',
+      error: excection.toString(),
+    });
+  }
 };
 
 const studentController = {
