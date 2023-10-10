@@ -6,7 +6,6 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js --watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "debugger": "node inspect server.js"
   },
   "keywords": [
